@@ -172,6 +172,10 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
+        if (!$this->getUsaBoleto()) {
+            return null;
+        }
+
         $nn = $this->getNossoNumero() . CalculoDV::bbNossoNumero($this->getNossoNumero());
         return strlen($nn) < 17 ? substr_replace($nn, '-', -1, 0) : $nn;
     }
@@ -183,9 +187,10 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     protected function getCampoLivre()
     {
-        if ($this->campoLivre) {
+        if ($this->campoLivre || !$this->getUsaBoleto()) {
             return $this->campoLivre;
         }
+        
         $length = strlen($this->getConvenio());
         $nossoNumero = $this->gerarNossoNumero();
         if (strlen($this->getNumero()) > 10) {
