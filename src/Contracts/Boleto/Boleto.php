@@ -269,6 +269,11 @@ interface Boleto
     public function getStatus();
 
     /**
+     * @return bool
+     */
+    public function getUsaBoleto();
+
+    /**
      * @return mixed
      */
     public function alterarBoleto();
