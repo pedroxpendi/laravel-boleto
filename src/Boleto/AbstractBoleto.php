@@ -39,7 +39,7 @@ abstract class AbstractBoleto implements BoletoContract
     ];
 
     protected $protectedFields = [
-        // 'nossoNumero',
+        'nossoNumero',
     ];
 
     /**
@@ -1456,11 +1456,7 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function setNossoNumero($nossoNumero)
     {
-        // Removido pois há casos onde o banco irá gerar
-        // throw new \Exception('Não é possível definir o nosso número diretamente. Utilize o método setNumero.');
-        $this->campoNossoNumero = $nossoNumero;
-
-        return $this;
+        throw new \Exception('Não é possível definir o nosso número diretamente. Utilize o método setNumero.');
     }
 
     /**
@@ -1470,6 +1466,7 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function getNossoNumero()
     {
+        echo "getUsaBoleto" . $this->getUsaBoleto();
         if (empty($this->campoNossoNumero) && $this->getUsaBoleto()) {
             return $this->campoNossoNumero = $this->gerarNossoNumero();
         }
@@ -1516,7 +1513,7 @@ abstract class AbstractBoleto implements BoletoContract
                 return false;
             }
         }
-        if (empty($this->campoNossoNumero) && empty($this->gerarNossoNumero())) {
+        if (empty($this->campoNossoNumero) && empty($this->gerarNossoNumero()) && $this->getUsaBoleto()) {
             $messages .= "Campo nosso número está em branco";
             return false;
         }
