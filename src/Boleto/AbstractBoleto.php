@@ -345,7 +345,7 @@ abstract class AbstractBoleto implements BoletoContract
      * Emissão do boleto por conta do beneficiário (true) por conta do banco (false)
      * @var bool
      */
-    public $emissaoPropria = true;
+    public $emissaoPropria = 'true';
 
     /**
      *
@@ -386,7 +386,7 @@ abstract class AbstractBoleto implements BoletoContract
     /**
      * @return bool
      */
-    public function isEmissaoPropria(): bool
+    public function isEmissaoPropria()
     {
         return boolval($this->emissaoPropria) ? 'true' : 'false';
     }
