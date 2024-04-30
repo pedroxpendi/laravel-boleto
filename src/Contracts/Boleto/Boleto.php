@@ -315,5 +315,9 @@ interface Boleto
      * @return mixed
      */
     public function getMostrarEnderecoFichaCompensacao();
+
+    public function getEmissaoPropria();
+
+    public function isEmissaoPropria();
 }
 
