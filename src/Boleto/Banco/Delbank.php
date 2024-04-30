@@ -87,8 +87,9 @@ class Delbank  extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return Util::numberFormatGeral($this->getNumero(), 10)
-            . CalculoDV::delcredNossoNumero($this->getCarteira(), $this->getNumero());
+        return $this->isEmissaoPropria()
+            ?  Util::numberFormatGeral($this->getNumero(), 10) . CalculoDV::delcredNossoNumero($this->getCarteira(), $this->getNumero())
+            : Util::numberFormatGeral(0, 12);
     }
 
     /**
@@ -116,7 +117,9 @@ class Delbank  extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return Util::numberFormatGeral($this->getCarteira(), 2) . ' / ' .  substr_replace($this->getNossoNumero(), '-', -1, 0);
+        return $this->isEmissaoPropria() 
+            ? Util::numberFormatGeral($this->getCarteira(), 2) . ' / ' .  substr_replace($this->getNossoNumero(), '-', -1, 0)
+            : Util::numberFormatGeral(0, 12);
     }
     /**
      * Método para gerar o código da posição de 20 a 44

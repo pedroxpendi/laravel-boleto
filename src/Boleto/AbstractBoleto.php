@@ -342,11 +342,10 @@ abstract class AbstractBoleto implements BoletoContract
     public $valorRecebido;
 
     /**
-     * Gerar boleto em PDF
-     * 
+     * Emissão do boleto por conta do beneficiário (true) por conta do banco (false)
      * @var bool
      */
-    public $usaBoleto = true;
+    protected $emissaoPropria = true;
 
     /**
      *
@@ -385,22 +384,30 @@ abstract class AbstractBoleto implements BoletoContract
     }
 
     /**
+     * @return bool
+     */
+    public function isEmissaoPropria(): bool
+    {
+        return $this->emissaoPropria;
+    }
+
+    /**
      * Define se irá usar boletos
      *
      * @return $this
      */
-    public function setUsaBoleto($usaBoleto)
+    public function setEmissaoPropria($emissaoPropria)
     {
-        $this->usaBoleto = $usaBoleto;
+        $this->emissaoPropria = $emissaoPropria;
         return $this;
     }
 
      /**
      * @return bool
      */
-    public function getUsaBoleto()
+    public function getEmissaoPropria()
     {
-        return $this->usaBoleto;
+        return $this->emissaoPropria;
     }
 
     /**
@@ -1466,8 +1473,7 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function getNossoNumero()
     {
-        echo "getUsaBoleto" . $this->getUsaBoleto();
-        if (empty($this->campoNossoNumero) && $this->getUsaBoleto()) {
+        if (empty($this->campoNossoNumero) && $this->getUsaBoleto() !== "false") {
             return $this->campoNossoNumero = $this->gerarNossoNumero();
         }
         return $this->campoNossoNumero;
@@ -1480,6 +1486,10 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
+        if ($this->getUsaBoleto() !== "false") {
+            return null;
+        }
+        
         return $this->getNossoNumero();
     }
 
@@ -1513,7 +1523,7 @@ abstract class AbstractBoleto implements BoletoContract
                 return false;
             }
         }
-        if (empty($this->campoNossoNumero) && empty($this->gerarNossoNumero()) && $this->getUsaBoleto()) {
+        if (empty($this->campoNossoNumero) && empty($this->gerarNossoNumero()) && $this->getUsaBoleto() !== "false") {
             $messages .= "Campo nosso número está em branco";
             return false;
         }

@@ -140,30 +140,31 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if (!$this->getUsaBoleto()) {
-            return null;
-        }
+        if ($this->isEmissaoPropria()) {
         
-        $convenio = $this->getConvenio();
-        $numero_boleto = $this->getNumero();
-        switch (strlen($convenio)) {
-        case 4:
-            $numero = Util::numberFormatGeral($convenio, 4) . Util::numberFormatGeral($numero_boleto, 7);
-            break;
-        case 6:
-            if (in_array($this->getCarteira(), ['16', '18']) && $this->getVariacaoCarteira() == 17) {
-                $numero = Util::numberFormatGeral($numero_boleto, 17);
-            } else {
-                $numero = Util::numberFormatGeral($convenio, 6) . Util::numberFormatGeral($numero_boleto, 5);
+            $convenio = $this->getConvenio();
+            $numero_boleto = $this->getNumero();
+            switch (strlen($convenio)) {
+            case 4:
+                $numero = Util::numberFormatGeral($convenio, 4) . Util::numberFormatGeral($numero_boleto, 7);
+                break;
+            case 6:
+                if (in_array($this->getCarteira(), ['16', '18']) && $this->getVariacaoCarteira() == 17) {
+                    $numero = Util::numberFormatGeral($numero_boleto, 17);
+                } else {
+                    $numero = Util::numberFormatGeral($convenio, 6) . Util::numberFormatGeral($numero_boleto, 5);
+                }
+                break;
+            case 7:
+                $numero = Util::numberFormatGeral($convenio, 7) . Util::numberFormatGeral($numero_boleto, 10);
+                break;
+            default:
+                throw new \Exception('O código do convênio precisa ter 4, 6 ou 7 dígitos!');
             }
-            break;
-        case 7:
-            $numero = Util::numberFormatGeral($convenio, 7) . Util::numberFormatGeral($numero_boleto, 10);
-            break;
-        default:
-            throw new \Exception('O código do convênio precisa ter 4, 6 ou 7 dígitos!');
+            return $numero;
+        } else {
+            return Util::numberFormatGeral(0, 12);
         }
-        return $numero;
     }
     /**
      * Método que retorna o nosso numero usado no boleto. alguns bancos possuem algumas diferenças.
@@ -172,12 +173,12 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        if (!$this->getUsaBoleto()) {
-            return null;
+        if ($this->isEmissaoPropria()) {
+            $nn = $this->getNossoNumero() . CalculoDV::bbNossoNumero($this->getNossoNumero());
+            return strlen($nn) < 17 ? substr_replace($nn, '-', -1, 0) : $nn;
+        } else {
+            return Util::numberFormatGeral(0, 12);
         }
-
-        $nn = $this->getNossoNumero() . CalculoDV::bbNossoNumero($this->getNossoNumero());
-        return strlen($nn) < 17 ? substr_replace($nn, '-', -1, 0) : $nn;
     }
     /**
      * Método para gerar o código da posição de 20 a 44
@@ -187,7 +188,7 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     protected function getCampoLivre()
     {
-        if ($this->campoLivre || !$this->getUsaBoleto()) {
+        if ($this->campoLivre) {
             return $this->campoLivre;
         }
         

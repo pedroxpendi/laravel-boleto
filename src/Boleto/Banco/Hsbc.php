@@ -106,10 +106,14 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        $range = Util::numberFormatGeral($this->getRange(), 5);
-        $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
-        $dv = Util::modulo11($range . $numero_boleto, 2, 7);
-        return $range . $numero_boleto . $dv;
+        if ($this->isEmissaoPropria()) {
+            $range = Util::numberFormatGeral($this->getRange(), 5);
+            $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
+            $dv = Util::modulo11($range . $numero_boleto, 2, 7);
+            return $range . $numero_boleto . $dv;
+        } else {
+            return Util::numberFormatGeral(0, 12);
+        }
     }
     /**
      * Método que retorna o nosso numero usado no boleto. alguns bancos possuem algumas diferenças.
@@ -118,7 +122,9 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return substr_replace($this->getNossoNumero(), '-', -1, 0);
+        return $this->isEmissaoPropria()
+            ? substr_replace($this->getNossoNumero(), '-', -1, 0)
+            : Util::numberFormatGeral(0, 12);
     }
     /**
      * Método para gerar o código da posição de 20 a 44

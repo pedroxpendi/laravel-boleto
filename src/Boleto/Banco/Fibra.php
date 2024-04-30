@@ -141,7 +141,7 @@ class Fibra extends AbstractBoleto implements BoletoContract
     protected function gerarNossoNumero()
     {
         $nn = 0;
-        if (Util::upper($this->getModalidadeCarteira()) == 'D') {
+        if (Util::upper($this->getModalidadeCarteira()) == 'D' && $this->isEmissaoPropria()) {
             $nn = ((int) $this->getRange()) + ((int) $this->getNumero());
             $nn .= CalculoDV::fibraNossoNumero($this->getAgencia(), $this->getCarteira(), $nn);
         }

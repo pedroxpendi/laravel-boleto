@@ -77,7 +77,9 @@ class Unicred extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return Util::numberFormatGeral($this->getNumero(), 10). CalculoDV::unicredNossoNumero($this->getNumero());
+        return $this->isEmissaoPropria()
+            ? Util::numberFormatGeral($this->getNumero(), 10). CalculoDV::unicredNossoNumero($this->getNumero())
+            : Util::numberFormatGeral(0, 12);
     }
 
     /**
@@ -87,7 +89,9 @@ class Unicred extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return substr_replace($this->getNossoNumero(), '-', -1, 0);
+        return $this->isEmissaoPropria()
+            ? substr_replace($this->getNossoNumero(), '-', -1, 0)
+            : Util::numberFormatGeral(0, 12);
     }
     /**
      * Método para gerar o código da posição de 20 a 44

@@ -198,11 +198,15 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        $ano = $this->getDataDocumento()->format('y');
-        $byte = $this->getByte();
-        $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
-        return  $ano . $byte . $numero_boleto
-            . CalculoDV::sicrediNossoNumero($this->getAgencia(), $this->getPosto(), $this->getCodigoCliente(), $ano, $byte, $numero_boleto);
+        if ($this->isEmissaoPropria()) {
+            $ano = $this->getDataDocumento()->format('y');
+            $byte = $this->getByte();
+            $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
+            return  $ano . $byte . $numero_boleto
+                . CalculoDV::sicrediNossoNumero($this->getAgencia(), $this->getPosto(), $this->getCodigoCliente(), $ano, $byte, $numero_boleto);
+        } else {
+            return Util::numberFormatGeral(0, 12);
+        }
     }
     /**
      * Método que retorna o nosso numero usado no boleto. alguns bancos possuem algumas diferenças.
@@ -210,8 +214,10 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      * @return string
      */
     public function getNossoNumeroBoleto()
-    {
-        return Util::maskString($this->getNossoNumero(), '##/######-#');
+    {   
+        return $this->isEmissaoPropria() 
+            ? Util::maskString($this->getNossoNumero(), '##/######-#')
+            : Util::numberFormatGeral(0, 12);
     }
     /**
      * Método para gerar o código da posição de 20 a 44

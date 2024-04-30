@@ -29,35 +29,11 @@ class Ourinvest extends AbstractBoleto implements BoletoContract
         'O'   => '99',  //Outros,
     ];
     /**
-     * Emissão do boleto por conta do beneficiário (true) por conta do banco (false)
-     * @var bool
-     */
-    protected $emissaoPropria = true;
-    /**
      * Linha de local de pagamento
      *
      * @var string
      */
     protected $localPagamento = 'Canais eletrônicos, agências ou correspondentes bancários de todo o BRASIL';
-
-    /**
-     * @return bool
-     */
-    public function isEmissaoPropria(): bool
-    {
-        return $this->emissaoPropria;
-    }
-
-    /**
-     * @param $emissaoPropria
-     *
-     * @return Ourinvest
-     */
-    public function setEmissaoPropria($emissaoPropria)
-    {
-        $this->emissaoPropria = $emissaoPropria;
-        return $this;
-    }
 
     /**
      * Gera o Nosso Número.

@@ -85,17 +85,21 @@ class Caixa  extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        $numero_boleto = Util::numberFormatGeral($this->getNumero(), 15);
-        $composicao = '1';
-        if ($this->getCarteira() == 'SR') {
-            $composicao = '2';
-        }
+        if ($this->isEmissaoPropria()) {
+            $numero_boleto = Util::numberFormatGeral($this->getNumero(), 15);
+            $composicao = '1';
+            if ($this->getCarteira() == 'SR') {
+                $composicao = '2';
+            }
 
-        $carteira = $composicao . '4';
-        // As 15 próximas posições no nosso número são a critério do beneficiário, utilizando o sequencial
-        // Depois, calcula-se o código verificador por módulo 11
-        $numero = $carteira . Util::numberFormatGeral($numero_boleto, 15);
-        return $numero;
+            $carteira = $composicao . '4';
+            // As 15 próximas posições no nosso número são a critério do beneficiário, utilizando o sequencial
+            // Depois, calcula-se o código verificador por módulo 11
+            $numero = $carteira . Util::numberFormatGeral($numero_boleto, 15);
+            return $numero;
+        } else {
+            return Util::numberFormatGeral(0, 12);
+        }
     }
     /**
      * Método que retorna o nosso numero usado no boleto. alguns bancos possuem algumas diferenças.
@@ -104,7 +108,9 @@ class Caixa  extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->getNossoNumero() . '-' . CalculoDV::cefNossoNumero($this->getNossoNumero());
+        return $this->isEmissaoPropria()
+            ? $this->getNossoNumero() . '-' . CalculoDV::cefNossoNumero($this->getNossoNumero())
+            : Util::numberFormatGeral(0, 12);
     }
 
     /**

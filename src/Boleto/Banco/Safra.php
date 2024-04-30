@@ -6,7 +6,7 @@ use Xpendi\CnabBoleto\CalculoDV;
 use Xpendi\CnabBoleto\Contracts\Boleto\Boleto as BoletoContract;
 use Xpendi\CnabBoleto\Util;
 
-class Itau extends AbstractBoleto implements BoletoContract
+class Safra extends AbstractBoleto implements BoletoContract
 {
 
     /**
@@ -14,14 +14,14 @@ class Itau extends AbstractBoleto implements BoletoContract
      *
      * @var string
      */
-    protected $localPagamento = 'Até o vencimento, preferencialmente no Itaú';
+    protected $localPagamento = 'Até o vencimento, preferencialmente no Safra';
 
     /**
      * Código do banco
      *
      * @var string
      */
-    protected $codigoBanco = self::COD_BANCO_ITAU;
+    protected $codigoBanco = self::COD_BANCO_SAFRA;
     /**
      * Variáveis adicionais.
      *
@@ -35,26 +35,22 @@ class Itau extends AbstractBoleto implements BoletoContract
      *
      * @var array
      */
-    protected $carteiras = ['112', '115', '188', '109', '121', '180', '110', '111'];
+    protected $carteiras = [
+        '1', // Cobrança Simples
+        '2' // Cobrança Vinculada
+    ];
     /**
      * Espécie do documento, coódigo para remessa
      *
      * @var string
      */
     protected $especiesCodigo = [
-        'DM' => '01',
-        'NP' => '02',
-        'NS' => '03',
-        'ME' => '04',
-        'REC' => '05',
-        'CT' => '06',
-        'CS' => '07',
-        'DS' => '08',
-        'LC' => '09',
-        'ND' => '13',
-        'CDA' => '15',
-        'EC' => '16',
-        'CPS' => '17',
+        'DM' => '01', // Duplicata Mercantil
+        'NP' => '02', // Nota Promissória
+        'NS' => '03', // Nota de Seguro
+        'REC' => '05', // Recibo
+        'DS' => '09', // Duplicata de Serviço
+        'BCC' => '31', // CARTAO DE CREDITO
     ];
     /**
      * Seta dias para baixa automática
