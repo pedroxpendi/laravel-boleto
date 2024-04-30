@@ -77,7 +77,7 @@ class Unicred extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return $this->isEmissaoPropria() === 'true'
+        return $this->isEmissaoPropria() === true
             ? Util::numberFormatGeral($this->getNumero(), 10). CalculoDV::unicredNossoNumero($this->getNumero())
             : Util::numberFormatGeral(0, 12);
     }
@@ -89,7 +89,7 @@ class Unicred extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === 'true'
+        return $this->isEmissaoPropria() === true
             ? substr_replace($this->getNossoNumero(), '-', -1, 0)
             : Util::numberFormatGeral(0, 12);
     }

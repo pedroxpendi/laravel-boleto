@@ -78,7 +78,7 @@ class Safra extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria() === 'true') {
+        if ($this->isEmissaoPropria() === true) {
             $numero_boleto = Util::numberFormatGeral($this->getNumero(), 8);
             $carteira = Util::numberFormatGeral($this->getCarteira(), 3);
             $agencia = Util::numberFormatGeral($this->getAgencia(), 4);
@@ -96,7 +96,7 @@ class Safra extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === 'true' 
+        return $this->isEmissaoPropria() === true 
             ? $this->getCarteira() . '/' . substr_replace($this->getNossoNumero(), '-', -1, 0)
             : Util::numberFormatGeral(0, 12);
     }
