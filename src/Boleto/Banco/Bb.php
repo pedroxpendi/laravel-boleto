@@ -140,7 +140,7 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria()) {
+        if ($this->isEmissaoPropria() === 'true') {
         
             $convenio = $this->getConvenio();
             $numero_boleto = $this->getNumero();
@@ -173,7 +173,7 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        if ($this->isEmissaoPropria()) {
+        if ($this->isEmissaoPropria() === 'true') {
             $nn = $this->getNossoNumero() . CalculoDV::bbNossoNumero($this->getNossoNumero());
             return strlen($nn) < 17 ? substr_replace($nn, '-', -1, 0) : $nn;
         } else {

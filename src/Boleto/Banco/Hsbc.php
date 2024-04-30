@@ -106,7 +106,7 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria()) {
+        if ($this->isEmissaoPropria() === 'true') {
             $range = Util::numberFormatGeral($this->getRange(), 5);
             $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
             $dv = Util::modulo11($range . $numero_boleto, 2, 7);
@@ -122,7 +122,7 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria()
+        return $this->isEmissaoPropria() === 'true'
             ? substr_replace($this->getNossoNumero(), '-', -1, 0)
             : Util::numberFormatGeral(0, 12);
     }

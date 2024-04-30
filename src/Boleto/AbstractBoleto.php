@@ -345,7 +345,7 @@ abstract class AbstractBoleto implements BoletoContract
      * Emissão do boleto por conta do beneficiário (true) por conta do banco (false)
      * @var bool
      */
-    protected $emissaoPropria = true;
+    public $emissaoPropria = true;
 
     /**
      *
@@ -388,7 +388,7 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function isEmissaoPropria(): bool
     {
-        return $this->emissaoPropria;
+        return boolval($this->emissaoPropria) ? 'true' : 'false';
     }
 
     /**
@@ -1932,6 +1932,7 @@ abstract class AbstractBoleto implements BoletoContract
                 'status' => $this->getStatus(),
                 'mostrar_endereco_ficha_compensacao' => $this->getMostrarEnderecoFichaCompensacao(),
                 'pix_qrcode' => $this->getPixQrCode(),
+                'emissao_propria' => $this->getEmissaoPropria()
             ], $this->variaveis_adicionais
         );
     }

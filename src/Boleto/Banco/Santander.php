@@ -223,7 +223,7 @@ class Santander extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return $this->isEmissaoPropria()
+        return $this->isEmissaoPropria() === 'true'
             ? Util::numberFormatGeral($this->getNumero(), 12) . CalculoDV::santanderNossoNumero($this->getNumero())
             : Util::numberFormatGeral(0, 12);
     }

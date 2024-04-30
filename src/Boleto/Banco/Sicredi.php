@@ -198,7 +198,7 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria()) {
+        if ($this->isEmissaoPropria() === 'true') {
             $ano = $this->getDataDocumento()->format('y');
             $byte = $this->getByte();
             $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
@@ -215,7 +215,7 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {   
-        return $this->isEmissaoPropria() 
+        return $this->isEmissaoPropria() === 'true' 
             ? Util::maskString($this->getNossoNumero(), '##/######-#')
             : Util::numberFormatGeral(0, 12);
     }
