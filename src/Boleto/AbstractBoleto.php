@@ -1473,7 +1473,7 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function getNossoNumero()
     {
-        if (empty($this->campoNossoNumero) && $this->getUsaBoleto() !== "false") {
+        if (empty($this->campoNossoNumero)) {
             return $this->campoNossoNumero = $this->gerarNossoNumero();
         }
         return $this->campoNossoNumero;
@@ -1486,10 +1486,6 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        if ($this->getUsaBoleto() !== "false") {
-            return null;
-        }
-        
         return $this->getNossoNumero();
     }
 
@@ -1523,7 +1519,7 @@ abstract class AbstractBoleto implements BoletoContract
                 return false;
             }
         }
-        if (empty($this->campoNossoNumero) && empty($this->gerarNossoNumero()) && $this->getUsaBoleto() !== "false") {
+        if (empty($this->campoNossoNumero) && empty($this->gerarNossoNumero())) {
             $messages .= "Campo nosso número está em branco";
             return false;
         }
