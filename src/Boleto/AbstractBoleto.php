@@ -402,7 +402,7 @@ abstract class AbstractBoleto implements BoletoContract
         return $this;
     }
 
-     /**
+    /**
      * @return bool
      */
     public function getEmissaoPropria()
@@ -507,7 +507,7 @@ abstract class AbstractBoleto implements BoletoContract
     public function setCarteira($carteira)
     {
         if ($this->getCarteiras() !== false && !in_array($carteira, $this->getCarteiras())) {
-            throw new \Exception("Carteira não disponível!");
+            throw new \Exception("Carteira não disponível!!!");
         }
         $this->carteira = $carteira;
 
@@ -758,7 +758,7 @@ abstract class AbstractBoleto implements BoletoContract
     {
         if (!empty($this->especiesCodigo240) && $tipo == 240) {
             $especie = $this->especiesCodigo240;
-        } elseif(!empty($this->especiesCodigo400) && $tipo == 400) {
+        } elseif (!empty($this->especiesCodigo400) && $tipo == 400) {
             $especie = $this->especiesCodigo400;
         } else {
             $especie = $this->especiesCodigo;
@@ -1244,7 +1244,7 @@ abstract class AbstractBoleto implements BoletoContract
         if ($this->getJuros() <= 0) {
             return 0;
         }
-        return Util::percent($this->getValor(), $this->getJuros())/30;
+        return Util::percent($this->getValor(), $this->getJuros()) / 30;
     }
 
     /**
@@ -1284,10 +1284,10 @@ abstract class AbstractBoleto implements BoletoContract
     {
         $diasProtesto = (int)$diasProtesto;
         $this->diasProtesto = $diasProtesto > 0 ? $diasProtesto : 0;
-        
+
         if (!empty($diasProtesto) && $this->getDiasBaixaAutomatica() > 0) {
             throw new \Exception('Você deve usar dias de protesto ou dias de baixa, nunca os 2');
-        }       
+        }
 
         return $this;
     }
@@ -1327,8 +1327,8 @@ abstract class AbstractBoleto implements BoletoContract
     {
         //Caso não tenha valor definido de dias pra protesto setar 60 dias como valor padrão para baixa automatica.
         //O valor padrão só será utilizado caso não haja nenhum valor definido para baixaAutomatica
-        if(empty($this->getDiasProtesto())){
-            $default = (empty($default)?60:$default);
+        if (empty($this->getDiasProtesto())) {
+            $default = (empty($default) ? 60 : $default);
         }
         return $this->diasBaixaAutomatica > 0 ? $this->diasBaixaAutomatica : $default;
     }
@@ -1452,8 +1452,10 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function getLogoBancoBase64()
     {
-        return 'data:image/' . pathinfo($this->getLogoBanco(),
-                PATHINFO_EXTENSION) . ';base64,' . base64_encode(file_get_contents($this->getLogoBanco()));
+        return 'data:image/' . pathinfo(
+            $this->getLogoBanco(),
+            PATHINFO_EXTENSION
+        ) . ';base64,' . base64_encode(file_get_contents($this->getLogoBanco()));
     }
 
     /**
@@ -1787,9 +1789,9 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function renderPDF($print = false, $instrucoes = true)
     {
-        if($this->codigoBanco == 104){
+        if ($this->codigoBanco == 104) {
             $pdf = new PdfCaixa();
-        }else{
+        } else {
             $pdf = new Pdf();
         }
         $pdf->addBoleto($this);
@@ -1851,7 +1853,8 @@ abstract class AbstractBoleto implements BoletoContract
             $nosso_numero_boleto = $this->getNossoNumeroBoleto();
             $linha_digitavel = $this->getLinhaDigitavel();
             $codigo_barras = $this->getCodigoBarras();
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         return array_merge(
             [
@@ -1887,8 +1890,8 @@ abstract class AbstractBoleto implements BoletoContract
                 'juros_apos' => $this->getJurosApos(),
                 'dias_protesto' => $this->getDiasProtesto(),
                 'sacador_avalista' =>
-                    $this->getSacadorAvalista()
-                        ? [
+                $this->getSacadorAvalista()
+                    ? [
                         'nome' => $this->getSacadorAvalista()->getNome(),
                         'endereco' => $this->getSacadorAvalista()->getEndereco(),
                         'bairro' => $this->getSacadorAvalista()->getBairro(),
@@ -1900,7 +1903,7 @@ abstract class AbstractBoleto implements BoletoContract
                         'endereco2' => $this->getSacadorAvalista()->getCepCidadeUf(),
                         'endereco_completo' => $this->getSacadorAvalista()->getEnderecoCompleto(),
                     ]
-                        : [],
+                    : [],
                 'pagador' => [
                     'nome' => $this->getPagador()->getNome(),
                     'endereco' => $this->getPagador()->getEndereco(),
@@ -1933,8 +1936,8 @@ abstract class AbstractBoleto implements BoletoContract
                 'mostrar_endereco_ficha_compensacao' => $this->getMostrarEnderecoFichaCompensacao(),
                 'pix_qrcode' => $this->getPixQrCode(),
                 'emissao_propria' => $this->getEmissaoPropria()
-            ], $this->variaveis_adicionais
+            ],
+            $this->variaveis_adicionais
         );
     }
 }
-
