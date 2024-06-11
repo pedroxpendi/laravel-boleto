@@ -54,7 +54,7 @@ class Santander extends AbstractRemessa implements RemessaContract
      *
      * @var array
      */
-    protected $carteiras = [1, 3, 5, 6, 7, 8];
+    protected $carteiras = ['1', '3', '5', '6', '7', '8'];
 
     /**
      * Caracter de fim de linha
