@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -90,9 +91,9 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
         $agencia = rtrim(sprintf('%s-%s', $this->getAgencia(), $this->getAgenciaDv()), '-');
 
         if ($this->getContaDv() !== null && strlen($this->getContaDv()) == 1) {
-            $conta = substr($this->getConta(), 0, -1) . '-' .substr($this->getConta(), -1).$this->getContaDv();
+            $conta = substr($this->getConta(), 0, -1) . '-' . substr($this->getConta(), -1) . $this->getContaDv();
         } elseif ($this->getContaDv() !== null && strlen($this->getContaDv()) == 2) {
-            $conta = substr($this->getConta(), 0, -1) . '-' .substr($this->getConta(), -1).$this->getContaDv();
+            $conta = substr($this->getConta(), 0, -1) . '-' . substr($this->getConta(), -1) . $this->getContaDv();
         } else {
             $conta = $this->getConta();
         }
@@ -106,7 +107,7 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria() === true) {
+        if ($this->isEmissaoPropria() === 'true') {
             $range = Util::numberFormatGeral($this->getRange(), 5);
             $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
             $dv = Util::modulo11($range . $numero_boleto, 2, 7);
@@ -122,7 +123,7 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === true
+        return $this->isEmissaoPropria() === 'true'
             ? substr_replace($this->getNossoNumero(), '-', -1, 0)
             : Util::numberFormatGeral(0, 12);
     }
@@ -153,7 +154,8 @@ class Hsbc  extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    public static function parseCampoLivre($campoLivre) {
+    public static function parseCampoLivre($campoLivre)
+    {
         return [
             'convenio' => null,
             'agenciaDv' => null,

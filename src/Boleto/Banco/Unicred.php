@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -31,12 +32,12 @@ class Unicred extends AbstractBoleto implements BoletoContract
     protected $especiesCodigo = [
         'DM'    =>  'DM', //'Duplicata Mercantil',
         'NP'    =>  'NP', //'Nota Promissória',
-        'NS'    =>  'NS',//'Nota de Seguro',
-        'CS'    =>  'CS',//'Cobrança Seriada',
-        'REC'   =>  'REC',//'Recibo',
-        'LC'    =>  'LC',//'Letras de Câmbio',
-        'ND'    =>  'ND',//'Nota de Débito',
-        'DS'    =>  'DS',//'Duplicata de Serviços',
+        'NS'    =>  'NS', //'Nota de Seguro',
+        'CS'    =>  'CS', //'Cobrança Seriada',
+        'REC'   =>  'REC', //'Recibo',
+        'LC'    =>  'LC', //'Letras de Câmbio',
+        'ND'    =>  'ND', //'Nota de Débito',
+        'DS'    =>  'DS', //'Duplicata de Serviços',
         'Outros'    =>  'Outros',
     ];
 
@@ -77,8 +78,8 @@ class Unicred extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return $this->isEmissaoPropria() === true
-            ? Util::numberFormatGeral($this->getNumero(), 10). CalculoDV::unicredNossoNumero($this->getNumero())
+        return $this->isEmissaoPropria() === 'true'
+            ? Util::numberFormatGeral($this->getNumero(), 10) . CalculoDV::unicredNossoNumero($this->getNumero())
             : Util::numberFormatGeral(0, 12);
     }
 
@@ -89,7 +90,7 @@ class Unicred extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === true
+        return $this->isEmissaoPropria() === 'true'
             ? substr_replace($this->getNossoNumero(), '-', -1, 0)
             : Util::numberFormatGeral(0, 12);
     }
@@ -108,11 +109,10 @@ class Unicred extends AbstractBoleto implements BoletoContract
         $nossoNumero = $this->getNossoNumero();
 
         $campoLivre = Util::numberFormatGeral($this->getAgencia(), 4); //Agência BENEFICIÁRIO (Sem o dígito verificador, completar com zeros à esquerda quando necessário)
-        $campoLivre .= Util::numberFormatGeral($this->getConta().$this->getContaDv(), 10); //Conta do BENEFICIÁRIO (Com o dígito verificador - Completar com zeros à esquerda quando necessário)
+        $campoLivre .= Util::numberFormatGeral($this->getConta() . $this->getContaDv(), 10); //Conta do BENEFICIÁRIO (Com o dígito verificador - Completar com zeros à esquerda quando necessário)
         $campoLivre .= Util::numberFormatGeral($nossoNumero, 11); //Nosso Número (Com o dígito verificador)
 
         return $this->campoLivre = $campoLivre;
-
     }
 
     /**
@@ -122,7 +122,8 @@ class Unicred extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    static public function parseCampoLivre($campoLivre) {
+    static public function parseCampoLivre($campoLivre)
+    {
         return [
             // 'convenio' => null,
             'agenciaDv' => null,
@@ -142,8 +143,9 @@ class Unicred extends AbstractBoleto implements BoletoContract
      * 9999/999999999-9. Obs.: Preencher com zeros à direita quando necessário.
      * @return string
      */
-    public function getAgenciaCodigoBeneficiario(){
-        return $this->getAgencia() . ' / ' . Util::numberFormatGeral($this->getConta(), 9) .'-'. $this->getContaDv();
+    public function getAgenciaCodigoBeneficiario()
+    {
+        return $this->getAgencia() . ' / ' . Util::numberFormatGeral($this->getConta(), 9) . '-' . $this->getContaDv();
     }
 
     /**
@@ -191,5 +193,4 @@ class Unicred extends AbstractBoleto implements BoletoContract
     {
         return $this->codigoCliente;
     }
-
 }

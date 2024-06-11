@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Cnab\Remessa\Cnab400\Banco;
 
 use Xpendi\CnabBoleto\CalculoDV;
@@ -104,9 +105,9 @@ class Bradesco extends AbstractRemessa implements RemessaContract
     {
         if (empty($this->codigoCliente)) {
             $this->codigoCliente = Util::formatCnab('9', $this->getCarteiraNumero(), 4) .
-            Util::formatCnab('9', $this->getAgencia(), 5) .
-            Util::formatCnab('9', $this->getConta(), 7) .
-            Util::formatCnab('9', $this->getContaDv() ?: CalculoDV::bradescoContaCorrente($this->getConta()), 1);
+                Util::formatCnab('9', $this->getAgencia(), 5) .
+                Util::formatCnab('9', $this->getConta(), 7) .
+                Util::formatCnab('9', $this->getContaDv() ?: CalculoDV::bradescoContaCorrente($this->getConta()), 1);
         }
 
         return $this->codigoCliente;
@@ -185,7 +186,7 @@ class Bradesco extends AbstractRemessa implements RemessaContract
         $this->add(67, 70, Util::formatCnab('9', $boleto->getMulta() > 0 ? $boleto->getMulta() : '0', 4, 2));
         $this->add(71, 82, Util::formatCnab('9', $boleto->getNossoNumero(), 12));
         $this->add(83, 92, Util::formatCnab('9', 0, 10, 2));
-        $this->add(93, 93, '2'); // 1 = Banco emite e Processa o registro. 2 = Cliente emite e o Banco somente processa o registro
+        $this->add(93, 93, $boleto->getEmissaoPropria() === 'true' ? '2' : '1'); // 1 = Banco emite e Processa o registro. 2 = Cliente emite e o Banco somente processa o registro
         $this->add(94, 94, ''); // N= Não registra na cobrança. Diferente de N registra e emite Boleto.
         $this->add(95, 104, '');
         $this->add(105, 105, '');

@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -140,26 +141,26 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria() === true) {
-        
+        if ($this->isEmissaoPropria() === 'true') {
+
             $convenio = $this->getConvenio();
             $numero_boleto = $this->getNumero();
             switch (strlen($convenio)) {
-            case 4:
-                $numero = Util::numberFormatGeral($convenio, 4) . Util::numberFormatGeral($numero_boleto, 7);
-                break;
-            case 6:
-                if (in_array($this->getCarteira(), ['16', '18']) && $this->getVariacaoCarteira() == 17) {
-                    $numero = Util::numberFormatGeral($numero_boleto, 17);
-                } else {
-                    $numero = Util::numberFormatGeral($convenio, 6) . Util::numberFormatGeral($numero_boleto, 5);
-                }
-                break;
-            case 7:
-                $numero = Util::numberFormatGeral($convenio, 7) . Util::numberFormatGeral($numero_boleto, 10);
-                break;
-            default:
-                throw new \Exception('O código do convênio precisa ter 4, 6 ou 7 dígitos!');
+                case 4:
+                    $numero = Util::numberFormatGeral($convenio, 4) . Util::numberFormatGeral($numero_boleto, 7);
+                    break;
+                case 6:
+                    if (in_array($this->getCarteira(), ['16', '18']) && $this->getVariacaoCarteira() == 17) {
+                        $numero = Util::numberFormatGeral($numero_boleto, 17);
+                    } else {
+                        $numero = Util::numberFormatGeral($convenio, 6) . Util::numberFormatGeral($numero_boleto, 5);
+                    }
+                    break;
+                case 7:
+                    $numero = Util::numberFormatGeral($convenio, 7) . Util::numberFormatGeral($numero_boleto, 10);
+                    break;
+                default:
+                    throw new \Exception('O código do convênio precisa ter 4, 6 ou 7 dígitos!');
             }
             return $numero;
         } else {
@@ -173,7 +174,7 @@ class Bb extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        if ($this->isEmissaoPropria() === true) {
+        if ($this->isEmissaoPropria() === 'true') {
             $nn = $this->getNossoNumero() . CalculoDV::bbNossoNumero($this->getNossoNumero());
             return strlen($nn) < 17 ? substr_replace($nn, '-', -1, 0) : $nn;
         } else {
@@ -191,7 +192,7 @@ class Bb extends AbstractBoleto implements BoletoContract
         if ($this->campoLivre) {
             return $this->campoLivre;
         }
-        
+
         $length = strlen($this->getConvenio());
         $nossoNumero = $this->gerarNossoNumero();
         if (strlen($this->getNumero()) > 10) {
@@ -202,11 +203,11 @@ class Bb extends AbstractBoleto implements BoletoContract
             }
         }
         switch ($length) {
-        case 4:
-        case 6:
-            return $this->campoLivre = $nossoNumero . Util::numberFormatGeral($this->getAgencia(), 4) . Util::numberFormatGeral($this->getConta(), 8) . Util::numberFormatGeral($this->getCarteira(), 2);
-        case 7:
-            return $this->campoLivre = '000000' . $nossoNumero . Util::numberFormatGeral($this->getCarteira(), 2);
+            case 4:
+            case 6:
+                return $this->campoLivre = $nossoNumero . Util::numberFormatGeral($this->getAgencia(), 4) . Util::numberFormatGeral($this->getConta(), 8) . Util::numberFormatGeral($this->getCarteira(), 2);
+            case 7:
+                return $this->campoLivre = '000000' . $nossoNumero . Util::numberFormatGeral($this->getCarteira(), 2);
         }
         throw new \Exception('O código do convênio precisa ter 4, 6 ou 7 dígitos!');
     }
@@ -218,18 +219,19 @@ class Bb extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    public static function parseCampoLivre($campoLivre) {
+    public static function parseCampoLivre($campoLivre)
+    {
         $convenio = substr($campoLivre, 0, 6);
         $nossoNumero = substr($campoLivre, 6, 5);
         if ($convenio == '000000') {
             $convenio = substr($campoLivre, 6, 7);
             $nossoNumero = substr($campoLivre, 13, 10);
         }
-        if ($convenio == '0000000' && in_array(substr($campoLivre, -2), ['16', '18']) ) {
+        if ($convenio == '0000000' && in_array(substr($campoLivre, -2), ['16', '18'])) {
             $convenio = substr($campoLivre, 0, 4);
             $nossoNumero = substr($campoLivre, 4, 7);
         }
-        if ($convenio == '0000000' && !in_array(substr($campoLivre, -2), ['16', '18']) ) {
+        if ($convenio == '0000000' && !in_array(substr($campoLivre, -2), ['16', '18'])) {
             $convenio = null;
             $nossoNumero = substr($campoLivre, 0, 17);
         }

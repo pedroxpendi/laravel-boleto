@@ -96,7 +96,7 @@ class Banrisul extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return $this->isEmissaoPropria() === true 
+        return $this->isEmissaoPropria() === 'true'
             ? Util::numberFormatGeral($this->getNumero(), 8) . CalculoDV::banrisulNossoNumero(Util::numberFormatGeral($this->getNumero(), 8))
             : Util::numberFormatGeral(0, 12);
     }
@@ -107,7 +107,7 @@ class Banrisul extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === true 
+        return $this->isEmissaoPropria() === 'true'
             ? substr_replace($this->getNossoNumero(), '-', -2, 0)
             : Util::numberFormatGeral(0, 12);
     }
@@ -119,7 +119,7 @@ class Banrisul extends AbstractBoleto implements BoletoContract
      */
     protected function getCampoLivre()
     {
-        if ($this->campoLivre){
+        if ($this->campoLivre) {
             return $this->campoLivre;
         }
 
@@ -140,7 +140,8 @@ class Banrisul extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    public static function parseCampoLivre($campoLivre) {
+    public static function parseCampoLivre($campoLivre)
+    {
         return [
             'carteira' => substr($campoLivre, 0, 1),
             'agencia' => substr($campoLivre, 2, 4),

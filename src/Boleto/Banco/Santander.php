@@ -26,7 +26,7 @@ class Santander extends AbstractBoleto implements BoletoContract
      *
      * @var array
      */
-    protected $carteiras = ['101', '201'];
+    protected $carteiras = ['1', '3', '5', '6', '7', '8'];
     /**
      * Espécie do documento, código para remessa 240
      *
@@ -72,9 +72,16 @@ class Santander extends AbstractBoleto implements BoletoContract
      * @var array
      */
     protected $carteirasNomes = [
-        '101' => 'Cobrança Simples ECR',
-        '102' => 'Cobrança Simples CSR',
-        '201' => 'Penhor'
+        // '101' => 'Cobrança Simples ECR',
+        // '102' => 'Cobrança Simples CSR',
+        // '201' => 'Penhor'
+        '1' => 'Cobrança Simples (Eletrônica com Registro)',
+        '3' => 'Cobrança Caucionada (Eletrônica com Registro)',
+        '5' => 'Cobrança Simples (Rápida com Registro)',
+        '6' => 'Cobrança Caucionada (Rápida com Registro)',
+        '7' => 'Cobrança Descontada (Eletrônica com Registro)',
+        '8' => 'Cobrança Cessão (Eletrônica com Registro)'
+
     ];
     /**
      * Define o valor do IOS - Seguradoras (Se 7% informar 7. Limitado a 9%) - Demais clientes usar 0 (zero)
@@ -106,7 +113,7 @@ class Santander extends AbstractBoleto implements BoletoContract
     public function getAgenciaCodigoBeneficiario()
     {
         $agencia = rtrim(sprintf('%s-%s', $this->getAgencia(), $this->getAgenciaDv()), '-');
-        return sprintf('%s / %s',$agencia, $this->getCodigoCliente());
+        return sprintf('%s / %s', $agencia, $this->getCodigoCliente());
     }
 
     /**
@@ -115,19 +122,20 @@ class Santander extends AbstractBoleto implements BoletoContract
      */
     public function getCarteiraNumero()
     {
-        switch ($this->carteira) {
-            case '101':
-                $carteira = '5';
-                break;
-            case '201':
-                $carteira = '1';
-                break;
-            default:
-                $carteira = $this->carteira;
-                break;
-        }
+        // switch ($this->carteira) {
+        //     case '101':
+        //         $carteira = '5';
+        //         break;
+        //     case '201':
+        //         $carteira = '1';
+        //         break;
+        //     default:
+        //         $carteira = $this->carteira;
+        //         break;
+        // }
 
-        return $carteira;
+        // return $carteira;
+        return $this->carteira;
     }
 
     /**
@@ -163,15 +171,15 @@ class Santander extends AbstractBoleto implements BoletoContract
      */
     public function setCarteira($carteira)
     {
-        switch ($carteira) {
-            case '1':
-            case '5':
-                $carteira = '101';
-                break;
-            case '4':
-                $carteira = '102';
-                break;
-        }
+        // switch ($carteira) {
+        //     case '1':
+        //     case '5':
+        //         $carteira = '101';
+        //         break;
+        //     case '4':
+        //         $carteira = '102';
+        //         break;
+        // }
         return parent::setCarteira($carteira);
     }
 
@@ -223,7 +231,7 @@ class Santander extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return $this->isEmissaoPropria() === true
+        return $this->isEmissaoPropria() === 'true'
             ? Util::numberFormatGeral($this->getNumero(), 12) . CalculoDV::santanderNossoNumero($this->getNumero())
             : Util::numberFormatGeral(0, 12);
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -78,7 +79,7 @@ class Safra extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria() === true) {
+        if ($this->isEmissaoPropria() === 'true') {
             $numero_boleto = Util::numberFormatGeral($this->getNumero(), 8);
             $carteira = Util::numberFormatGeral($this->getCarteira(), 3);
             $agencia = Util::numberFormatGeral($this->getAgencia(), 4);
@@ -96,7 +97,7 @@ class Safra extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === true 
+        return $this->isEmissaoPropria() === 'true'
             ? $this->getCarteira() . '/' . substr_replace($this->getNossoNumero(), '-', -1, 0)
             : Util::numberFormatGeral(0, 12);
     }
@@ -129,7 +130,8 @@ class Safra extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    public static function parseCampoLivre($campoLivre) {
+    public static function parseCampoLivre($campoLivre)
+    {
         return [
             'convenio' => null,
             'agenciaDv' => null,
@@ -148,8 +150,9 @@ class Safra extends AbstractBoleto implements BoletoContract
      *
      * @return int
      */
-    public function getContaDv(){
-        if($this->contaDv !== NULL)
+    public function getContaDv()
+    {
+        if ($this->contaDv !== NULL)
             return $this->contaDv;
         return  CalculoDV::itauContaCorrente($this->getAgencia(), $this->getConta());
     }

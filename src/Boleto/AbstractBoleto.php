@@ -388,7 +388,7 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function isEmissaoPropria()
     {
-        return boolval($this->emissaoPropria) ? 'true' : 'false';
+        return $this->emissaoPropria;
     }
 
     /**

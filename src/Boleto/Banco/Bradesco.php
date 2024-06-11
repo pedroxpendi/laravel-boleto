@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -87,7 +88,7 @@ class Bradesco  extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return $this->isEmissaoPropria() === true
+        return $this->isEmissaoPropria() === 'true'
             ? Util::numberFormatGeral($this->getNumero(), 11)
             . CalculoDV::bradescoNossoNumero($this->getCarteira(), $this->getNumero())
             : Util::numberFormatGeral(0, 12);
@@ -118,7 +119,7 @@ class Bradesco  extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === true
+        return $this->isEmissaoPropria() === 'true'
             ? Util::numberFormatGeral($this->getCarteira(), 2) . ' / ' .  substr_replace($this->getNossoNumero(), '-', -1, 0)
             : Util::numberFormatGeral(0, 12);
     }
@@ -149,7 +150,8 @@ class Bradesco  extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    public static function parseCampoLivre($campoLivre) {
+    public static function parseCampoLivre($campoLivre)
+    {
         return [
             'convenio' => null,
             'agenciaDv' => null,

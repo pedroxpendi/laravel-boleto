@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -141,7 +142,7 @@ class Fibra extends AbstractBoleto implements BoletoContract
     protected function gerarNossoNumero()
     {
         $nn = 0;
-        if (Util::upper($this->getModalidadeCarteira()) == 'D' && $this->isEmissaoPropria() === true) {
+        if (Util::upper($this->getModalidadeCarteira()) == 'D' && $this->isEmissaoPropria() === 'true') {
             $nn = ((int) $this->getRange()) + ((int) $this->getNumero());
             $nn .= CalculoDV::fibraNossoNumero($this->getAgencia(), $this->getCarteira(), $nn);
         }
@@ -176,7 +177,8 @@ class Fibra extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    static public function parseCampoLivre($campoLivre) {
+    static public function parseCampoLivre($campoLivre)
+    {
         return [
             'convenio' => null,
             'parcela' => null,
@@ -196,7 +198,8 @@ class Fibra extends AbstractBoleto implements BoletoContract
     /**
      * @return string
      */
-    public function getAgenciaCodigoBeneficiario(){
-        return sprintf('%s%s / %s%s',$this->getAgencia(), CalculoDV::fibraAgencia($this->getAgencia()), $this->getConta(), CalculoDV::fibraConta($this->getConta()));
+    public function getAgenciaCodigoBeneficiario()
+    {
+        return sprintf('%s%s / %s%s', $this->getAgencia(), CalculoDV::fibraAgencia($this->getAgencia()), $this->getConta(), CalculoDV::fibraConta($this->getConta()));
     }
 }

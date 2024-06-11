@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -43,7 +44,7 @@ class Ourinvest extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        return $this->isEmissaoPropria() === true
+        return $this->isEmissaoPropria() === 'true'
             ? Util::numberFormatGeral($this->getNumero(), 11) . CalculoDV::ourinvestNossoNumero($this->getCarteira(), $this->getNumero())
             : Util::numberFormatGeral(0, 12);
     }
@@ -75,7 +76,8 @@ class Ourinvest extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    static public function parseCampoLivre($campoLivre) {
+    static public function parseCampoLivre($campoLivre)
+    {
         return [
             'convenio' => null,
             'parcela' => null,
@@ -95,7 +97,8 @@ class Ourinvest extends AbstractBoleto implements BoletoContract
     /**
      * @return string
      */
-    public function getAgenciaCodigoBeneficiario(){
-        return sprintf('%04s-%s / %07s-%s',$this->getAgencia(), CalculoDV::ourinvestAgencia($this->getAgencia()), $this->getConta(), CalculoDV::ourinvestConta($this->getConta()));
+    public function getAgenciaCodigoBeneficiario()
+    {
+        return sprintf('%04s-%s / %07s-%s', $this->getAgencia(), CalculoDV::ourinvestAgencia($this->getAgencia()), $this->getConta(), CalculoDV::ourinvestConta($this->getConta()));
     }
 }

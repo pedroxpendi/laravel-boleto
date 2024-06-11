@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -85,7 +86,7 @@ class Caixa  extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria() === true) {
+        if ($this->isEmissaoPropria() === 'true') {
             $numero_boleto = Util::numberFormatGeral($this->getNumero(), 15);
             $composicao = '1';
             if ($this->getCarteira() == 'SR') {
@@ -108,7 +109,7 @@ class Caixa  extends AbstractBoleto implements BoletoContract
      */
     public function getNossoNumeroBoleto()
     {
-        return $this->isEmissaoPropria() === true
+        return $this->isEmissaoPropria() === 'true'
             ? $this->getNossoNumero() . '-' . CalculoDV::cefNossoNumero($this->getNossoNumero())
             : Util::numberFormatGeral(0, 12);
     }
@@ -117,10 +118,11 @@ class Caixa  extends AbstractBoleto implements BoletoContract
      * Na CEF deve retornar agência (sem o DV) / código beneficiário (com DV)
      * @return [type] [description]
      */
-    public function getAgenciaCodigoBeneficiario(){
-        return $this->getAgencia() . ' / ' . 
-               $this->getCodigoCliente() . '-' . 
-               Util::modulo11($this->getCodigoCliente());
+    public function getAgenciaCodigoBeneficiario()
+    {
+        return $this->getAgencia() . ' / ' .
+            $this->getCodigoCliente() . '-' .
+            Util::modulo11($this->getCodigoCliente());
     }
 
     /**
@@ -177,7 +179,8 @@ class Caixa  extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    public static function parseCampoLivre($campoLivre) {
+    public static function parseCampoLivre($campoLivre)
+    {
         return [
             'convenio' => null,
             'agencia' => null,

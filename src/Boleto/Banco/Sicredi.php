@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto\Boleto\Banco;
 
 use Xpendi\CnabBoleto\Boleto\AbstractBoleto;
@@ -198,7 +199,7 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      */
     protected function gerarNossoNumero()
     {
-        if ($this->isEmissaoPropria() === true) {
+        if ($this->isEmissaoPropria() === 'true') {
             $ano = $this->getDataDocumento()->format('y');
             $byte = $this->getByte();
             $numero_boleto = Util::numberFormatGeral($this->getNumero(), 5);
@@ -214,8 +215,8 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      * @return string
      */
     public function getNossoNumeroBoleto()
-    {   
-        return $this->isEmissaoPropria() === true 
+    {
+        return $this->isEmissaoPropria() === 'true'
             ? Util::maskString($this->getNossoNumero(), '##/######-#')
             : Util::numberFormatGeral(0, 12);
     }
@@ -250,7 +251,8 @@ class Sicredi extends AbstractBoleto implements BoletoContract
      *
      * @return array
      */
-    public static function parseCampoLivre($campoLivre) {
+    public static function parseCampoLivre($campoLivre)
+    {
         return [
             'convenio' => null,
             'agenciaDv' => null,
