@@ -370,7 +370,7 @@ abstract class AbstractRemessa
     public function setCarteira($carteira)
     {
         if ($this->getCarteiras() !== false && !in_array($carteira, $this->getCarteiras())) {
-            throw new \Exception("Carteira não disponível!!");
+            throw new \Exception("Carteira não disponível!");
         }
         $this->carteira = $carteira;
 

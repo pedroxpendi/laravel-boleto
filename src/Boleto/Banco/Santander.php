@@ -122,20 +122,19 @@ class Santander extends AbstractBoleto implements BoletoContract
      */
     public function getCarteiraNumero()
     {
-        // switch ($this->carteira) {
-        //     case '101':
-        //         $carteira = '5';
-        //         break;
-        //     case '201':
-        //         $carteira = '1';
-        //         break;
-        //     default:
-        //         $carteira = $this->carteira;
-        //         break;
-        // }
+        switch ($this->carteira) {
+            case '101':
+                $carteira = '5';
+                break;
+            case '201':
+                $carteira = '1';
+                break;
+            default:
+                $carteira = $this->carteira;
+                break;
+        }
 
-        // return $carteira;
-        return $this->carteira;
+        return $carteira;
     }
 
     /**
