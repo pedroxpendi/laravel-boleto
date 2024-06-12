@@ -146,7 +146,7 @@ class Santander extends AbstractRemessa implements RemessaContract
         $this->add(95, 100, $this->getDataRemessa('dmy'));
         $this->add(101, 116, Util::formatCnab('9', '0', 16));
         $this->add(117, 391, '');
-        $this->add(392, 394, '000');
+        $this->add(392, 394, Util::formatCnab('9', $this->getIdremessa(), 3));
         $this->add(395, 400, Util::formatCnab('9', 1, 6));
 
         return $this;
