@@ -1364,8 +1364,7 @@ abstract class AbstractBoleto implements BoletoContract
      */
     public function getLogoBase64()
     {
-        return 'data:image/jpg' .
-            //. pathinfo($this->getLogo(), PATHINFO_EXTENSION) .
+        return 'data:image/' . pathinfo($this->getLogo(), PATHINFO_EXTENSION) .
             ';base64,' . base64_encode(file_get_contents($this->getLogo()));
     }
 
