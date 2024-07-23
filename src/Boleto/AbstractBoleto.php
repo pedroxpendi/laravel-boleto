@@ -507,7 +507,7 @@ abstract class AbstractBoleto implements BoletoContract
     public function setCarteira($carteira)
     {
         if ($this->getCarteiras() !== false && !in_array($carteira, $this->getCarteiras())) {
-            throw new \Exception("Carteira não disponível!!!");
+            throw new \Exception("Carteira não disponível!");
         }
         $this->carteira = $carteira;
 
@@ -1314,8 +1314,12 @@ abstract class AbstractBoleto implements BoletoContract
     {
         $nomeBanco = basename(get_class($this));
 
-        if (str_contains($nomeBanco, 'Bb')) {
-            $nomeBanco = 'BB';
+        $arr = explode("\\", $nomeBanco);
+
+        $nomeBanco = end($arr);
+
+        if (strlen($nomeBanco) < 4) {
+            $nomeBanco = strtoupper($nomeBanco);
         }
 
         $exception = sprintf('O banco %s não suporta baixa automática.', $nomeBanco);
