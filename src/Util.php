@@ -443,7 +443,13 @@ final class Util
         // }
         // $formater->setPattern($pattern);
         // return trim($formater->formatCurrency($number, $formater->getTextAttribute(\NumberFormatter::CURRENCY_CODE)));
-        return number_format($number, $decimals, ',', '.');
+        $valor = number_format($number, $decimals, ',', '.');
+
+        if ($symbol) {
+            return "R$ " . $valor;
+        }
+
+        return $valor;
     }
 
     /**
