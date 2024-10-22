@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpendi\CnabBoleto;
 
 use Carbon\Carbon;
@@ -311,17 +312,74 @@ final class Util
     public static function normalizeChars($string)
     {
         $normalizeChars = array(
-            'Á' => 'A', 'À' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Å' => 'A', 'Ä' => 'A', 'Æ' => 'AE', 'Ç' => 'C',
-            'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Í' => 'I', 'Ì' => 'I', 'Î' => 'I', 'Ï' => 'I', 'Ð' => 'Eth',
-            'Ñ' => 'N', 'Ó' => 'O', 'Ò' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O', 'Ø' => 'O',
-            'Ú' => 'U', 'Ù' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'Ŕ' => 'R',
+            'Á' => 'A',
+            'À' => 'A',
+            'Â' => 'A',
+            'Ã' => 'A',
+            'Å' => 'A',
+            'Ä' => 'A',
+            'Æ' => 'AE',
+            'Ç' => 'C',
+            'É' => 'E',
+            'È' => 'E',
+            'Ê' => 'E',
+            'Ë' => 'E',
+            'Í' => 'I',
+            'Ì' => 'I',
+            'Î' => 'I',
+            'Ï' => 'I',
+            'Ð' => 'Eth',
+            'Ñ' => 'N',
+            'Ó' => 'O',
+            'Ò' => 'O',
+            'Ô' => 'O',
+            'Õ' => 'O',
+            'Ö' => 'O',
+            'Ø' => 'O',
+            'Ú' => 'U',
+            'Ù' => 'U',
+            'Û' => 'U',
+            'Ü' => 'U',
+            'Ý' => 'Y',
+            'Ŕ' => 'R',
 
-            'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a', 'å' => 'a', 'ä' => 'a', 'æ' => 'ae', 'ç' => 'c',
-            'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e', 'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i', 'ð' => 'eth',
-            'ñ' => 'n', 'ó' => 'o', 'ò' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o',
-            'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u', 'ý' => 'y', 'ŕ' => 'r', 'ÿ' => 'y',
+            'á' => 'a',
+            'à' => 'a',
+            'â' => 'a',
+            'ã' => 'a',
+            'å' => 'a',
+            'ä' => 'a',
+            'æ' => 'ae',
+            'ç' => 'c',
+            'é' => 'e',
+            'è' => 'e',
+            'ê' => 'e',
+            'ë' => 'e',
+            'í' => 'i',
+            'ì' => 'i',
+            'î' => 'i',
+            'ï' => 'i',
+            'ð' => 'eth',
+            'ñ' => 'n',
+            'ó' => 'o',
+            'ò' => 'o',
+            'ô' => 'o',
+            'õ' => 'o',
+            'ö' => 'o',
+            'ø' => 'o',
+            'ú' => 'u',
+            'ù' => 'u',
+            'û' => 'u',
+            'ü' => 'u',
+            'ý' => 'y',
+            'ŕ' => 'r',
+            'ÿ' => 'y',
 
-            'ß' => 'sz', 'þ' => 'thorn', 'º' => '', 'ª' => '', '°' => '',
+            'ß' => 'sz',
+            'þ' => 'thorn',
+            'º' => '',
+            'ª' => '',
+            '°' => '',
         );
 
         return preg_replace('/[^0-9a-zA-Z !+=*\-,.;:%@_]/', '', strtr($string, $normalizeChars));
@@ -366,25 +424,26 @@ final class Util
      */
     public static function nReal($number, $decimals = 2, $symbol = true, $fixed = true)
     {
-        if (is_null($number) || empty(self::onlyNumbers($number))) {
-            return '';
-        }
-        $formater = new \NumberFormatter("pt-BR", \NumberFormatter::CURRENCY);
-        $formater->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, ($fixed ? $decimals : 1));
-        if ($decimals === false) {
-            $decimals = 2;
-            preg_match_all('/[0-9][^0-9]([0-9]+)/', $number, $matches);
-            if (!empty($matches[1])) {
-                $decimals = mb_strlen(rtrim($matches[1][0], 0));
-            }
-        }
-        $formater->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
-        $pattern = substr($formater->getPattern(), strpos($formater->getPattern(), '#'));
-        if ($symbol) {
-            $pattern = "¤ " . $pattern;
-        }
-        $formater->setPattern($pattern);
-        return trim($formater->formatCurrency($number, $formater->getTextAttribute(\NumberFormatter::CURRENCY_CODE)));
+        // if (is_null($number) || empty(self::onlyNumbers($number))) {
+        //     return '';
+        // }
+        // $formater = new \NumberFormatter("pt-BR", \NumberFormatter::CURRENCY);
+        // $formater->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, ($fixed ? $decimals : 1));
+        // if ($decimals === false) {
+        //     $decimals = 2;
+        //     preg_match_all('/[0-9][^0-9]([0-9]+)/', $number, $matches);
+        //     if (!empty($matches[1])) {
+        //         $decimals = mb_strlen(rtrim($matches[1][0], 0));
+        //     }
+        // }
+        // $formater->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+        // $pattern = substr($formater->getPattern(), strpos($formater->getPattern(), '#'));
+        // if ($symbol) {
+        //     $pattern = "¤ " . $pattern;
+        // }
+        // $formater->setPattern($pattern);
+        // return trim($formater->formatCurrency($number, $formater->getTextAttribute(\NumberFormatter::CURRENCY_CODE)));
+        return number_format($number, $decimals, ',', '.');
     }
 
     /**
@@ -398,7 +457,7 @@ final class Util
      */
     public static function percentOf($big, $small, $defaultOnZero = 0)
     {
-        $result = $big > 0.01 ? (($small*100)/$big) : $defaultOnZero;
+        $result = $big > 0.01 ? (($small * 100) / $big) : $defaultOnZero;
         return self::nFloat($result);
     }
 
@@ -415,7 +474,7 @@ final class Util
         if ($percent < 0.01) {
             return 0;
         }
-        return self::nFloat($big*($percent/100));
+        return self::nFloat($big * ($percent / 100));
     }
 
     /**
@@ -554,7 +613,7 @@ final class Util
     {
         $sum = 0;
         for ($i = mb_strlen($n); $i > 0; $i--) {
-            $sum += ((int) mb_substr($n, $i - 1, 1))*$factor;
+            $sum += ((int) mb_substr($n, $i - 1, 1)) * $factor;
             if ($factor == $base) {
                 $factor = 1;
             }
@@ -563,13 +622,13 @@ final class Util
 
         if ($x10 == 0) {
             $sum *= 10;
-            $digito = $sum%11;
+            $digito = $sum % 11;
             if ($digito == 10) {
                 $digito = $resto10;
             }
             return $digito;
         }
-        return $sum%11;
+        return $sum % 11;
     }
 
     /**
@@ -584,11 +643,12 @@ final class Util
         $even = array_intersect_key($chars, array_fill_keys(range(0, count($chars), 2), null));
         $even = array_map(
             function ($n) {
-                return ($n >= 5) ? 2*$n - 9 : 2*$n;
-            }, $even
+                return ($n >= 5) ? 2 * $n - 9 : 2 * $n;
+            },
+            $even
         );
         $total = array_sum($odd) + array_sum($even);
-        return ((floor($total/10) + 1)*10 - $total)%10;
+        return ((floor($total / 10) + 1) * 10 - $total) % 10;
     }
 
     /**
@@ -653,46 +713,46 @@ final class Util
         // header
         self::adiciona($retorno[0], 1, 9, '02RETORNO');
         switch ($banco) {
-        case Contracts\Boleto\Boleto::COD_BANCO_BB:
-            self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
-            self::adiciona($retorno[0], 31, 31, self::remove(31, 31, $remessa[0]));
-            self::adiciona($retorno[0], 32, 39, self::remove(32, 39, $remessa[0]));
-            self::adiciona($retorno[0], 40, 40, self::remove(40, 40, $remessa[0]));
-            self::adiciona($retorno[0], 150, 156, self::remove(130, 136, $remessa[0]));
-            break;
-        case Contracts\Boleto\Boleto::COD_BANCO_SANTANDER:
-            self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
-            self::adiciona($retorno[0], 39, 46, '0' . self::remove(40, 46, $remessa[0]));
-            break;
-        case Contracts\Boleto\Boleto::COD_BANCO_CEF:
-            self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
-            self::adiciona($retorno[0], 31, 36, self::remove(31, 36, $remessa[0]));
-            break;
-        case Contracts\Boleto\Boleto::COD_BANCO_BRADESCO:
-        case Contracts\Boleto\Boleto::COD_BANCO_OURINVEST:
-            self::adiciona($retorno[0], 27, 46, self::remove(27, 46, $remessa[0]));
-            break;
-        case Contracts\Boleto\Boleto::COD_BANCO_ITAU:
-            self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
-            self::adiciona($retorno[0], 33, 37, self::remove(33, 37, $remessa[0]));
-            self::adiciona($retorno[0], 38, 38, self::remove(38, 38, $remessa[0]));
-            break;
-        case Contracts\Boleto\Boleto::COD_BANCO_HSBC:
-            self::adiciona($retorno[0], 28, 31, self::remove(28, 31, $remessa[0]));
-            self::adiciona($retorno[0], 38, 43, self::remove(38, 43, $remessa[0]));
-            self::adiciona($retorno[0], 44, 44, self::remove(44, 44, $remessa[0]));
-            break;
-        case Contracts\Boleto\Boleto::COD_BANCO_SICREDI:
-            self::adiciona($retorno[0], 27, 31, self::remove(27, 31, $remessa[0]));
-            self::adiciona($retorno[0], 32, 45, self::remove(32, 45, $remessa[0]));
-            self::adiciona($retorno[0], 111, 117, self::remove(111, 117, $remessa[0]));
-            break;
-        case Contracts\Boleto\Boleto::COD_BANCO_BANRISUL:
-            self::adiciona($retorno[0], 27, 39, self::remove(18, 30, $remessa[0]));
-            self::adiciona($retorno[0], 47, 76, self::remove(47, 76, $remessa[0]));
-            break;
-        default:
-            throw new \Exception("Banco: $banco, inválido");
+            case Contracts\Boleto\Boleto::COD_BANCO_BB:
+                self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
+                self::adiciona($retorno[0], 31, 31, self::remove(31, 31, $remessa[0]));
+                self::adiciona($retorno[0], 32, 39, self::remove(32, 39, $remessa[0]));
+                self::adiciona($retorno[0], 40, 40, self::remove(40, 40, $remessa[0]));
+                self::adiciona($retorno[0], 150, 156, self::remove(130, 136, $remessa[0]));
+                break;
+            case Contracts\Boleto\Boleto::COD_BANCO_SANTANDER:
+                self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
+                self::adiciona($retorno[0], 39, 46, '0' . self::remove(40, 46, $remessa[0]));
+                break;
+            case Contracts\Boleto\Boleto::COD_BANCO_CEF:
+                self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
+                self::adiciona($retorno[0], 31, 36, self::remove(31, 36, $remessa[0]));
+                break;
+            case Contracts\Boleto\Boleto::COD_BANCO_BRADESCO:
+            case Contracts\Boleto\Boleto::COD_BANCO_OURINVEST:
+                self::adiciona($retorno[0], 27, 46, self::remove(27, 46, $remessa[0]));
+                break;
+            case Contracts\Boleto\Boleto::COD_BANCO_ITAU:
+                self::adiciona($retorno[0], 27, 30, self::remove(27, 30, $remessa[0]));
+                self::adiciona($retorno[0], 33, 37, self::remove(33, 37, $remessa[0]));
+                self::adiciona($retorno[0], 38, 38, self::remove(38, 38, $remessa[0]));
+                break;
+            case Contracts\Boleto\Boleto::COD_BANCO_HSBC:
+                self::adiciona($retorno[0], 28, 31, self::remove(28, 31, $remessa[0]));
+                self::adiciona($retorno[0], 38, 43, self::remove(38, 43, $remessa[0]));
+                self::adiciona($retorno[0], 44, 44, self::remove(44, 44, $remessa[0]));
+                break;
+            case Contracts\Boleto\Boleto::COD_BANCO_SICREDI:
+                self::adiciona($retorno[0], 27, 31, self::remove(27, 31, $remessa[0]));
+                self::adiciona($retorno[0], 32, 45, self::remove(32, 45, $remessa[0]));
+                self::adiciona($retorno[0], 111, 117, self::remove(111, 117, $remessa[0]));
+                break;
+            case Contracts\Boleto\Boleto::COD_BANCO_BANRISUL:
+                self::adiciona($retorno[0], 27, 39, self::remove(18, 30, $remessa[0]));
+                self::adiciona($retorno[0], 47, 76, self::remove(47, 76, $remessa[0]));
+                break;
+            default:
+                throw new \Exception("Banco: $banco, inválido");
         }
         self::adiciona($retorno[0], 77, 79, $banco);
         self::adiciona($retorno[0], 95, 100, date('dmy'));
@@ -716,44 +776,44 @@ final class Util
             self::adiciona($retorno[$i], 117, 126, self::remove(111, 120, $detalhe));
             self::adiciona($retorno[$i], 395, 400, sprintf('%06s', count($retorno)));
             switch ($banco) {
-            case Contracts\Boleto\Boleto::COD_BANCO_BB:
-                if (self::remove(1, 1, $detalhe) != 7) {
-                    unset($retorno[$i]);
-                    continue 2;
-                }
-                self::adiciona($retorno[$i], 1, 1, '7');
-                self::adiciona($retorno[$i], 64, 80, self::remove(64, 80, $detalhe));
-                break;
-            case Contracts\Boleto\Boleto::COD_BANCO_SANTANDER:
-                self::adiciona($retorno[$i], 63, 71, self::remove(63, 71, $detalhe));
-                self::adiciona($retorno[$i], 384, 385, self::remove(384, 385, $detalhe));
-                break;
-            case Contracts\Boleto\Boleto::COD_BANCO_CEF:
-                self::adiciona($retorno[$i], 57, 73, self::remove(57, 73, $detalhe));
-                break;
-            case Contracts\Boleto\Boleto::COD_BANCO_BRADESCO:
-            case Contracts\Boleto\Boleto::COD_BANCO_OURINVEST:
-                self::adiciona($retorno[$i], 25, 29, self::remove(25, 29, $detalhe));
-                self::adiciona($retorno[$i], 30, 36, self::remove(30, 36, $detalhe));
-                self::adiciona($retorno[$i], 37, 37, self::remove(37, 37, $detalhe));
-                self::adiciona($retorno[$i], 71, 82, self::remove(71, 82, $detalhe));
-                break;
-            case Contracts\Boleto\Boleto::COD_BANCO_ITAU:
-                self::adiciona($retorno[$i], 86, 94, self::remove(63, 70, $detalhe));
-                break;
-            case Contracts\Boleto\Boleto::COD_BANCO_HSBC:
-                self::adiciona($retorno[$i], 63, 73, self::remove(63, 73, $detalhe));
-                break;
-            case Contracts\Boleto\Boleto::COD_BANCO_SICREDI:
-                self::adiciona($retorno[$i], 48, 62, '00000' . self::remove(48, 56, $detalhe));
-                break;
-            case Contracts\Boleto\Boleto::COD_BANCO_BANRISUL:
-                self::adiciona($retorno[$i], 38, 62, self::remove(38, 62, $detalhe));
-                self::adiciona($retorno[$i], 63, 72, self::remove(111, 120, $detalhe));
-                self::adiciona($retorno[$i], 18, 30, self::remove(18, 30, $detalhe));
-                break;
-            default:
-                throw new \Exception("Banco: $banco, inválido");
+                case Contracts\Boleto\Boleto::COD_BANCO_BB:
+                    if (self::remove(1, 1, $detalhe) != 7) {
+                        unset($retorno[$i]);
+                        continue 2;
+                    }
+                    self::adiciona($retorno[$i], 1, 1, '7');
+                    self::adiciona($retorno[$i], 64, 80, self::remove(64, 80, $detalhe));
+                    break;
+                case Contracts\Boleto\Boleto::COD_BANCO_SANTANDER:
+                    self::adiciona($retorno[$i], 63, 71, self::remove(63, 71, $detalhe));
+                    self::adiciona($retorno[$i], 384, 385, self::remove(384, 385, $detalhe));
+                    break;
+                case Contracts\Boleto\Boleto::COD_BANCO_CEF:
+                    self::adiciona($retorno[$i], 57, 73, self::remove(57, 73, $detalhe));
+                    break;
+                case Contracts\Boleto\Boleto::COD_BANCO_BRADESCO:
+                case Contracts\Boleto\Boleto::COD_BANCO_OURINVEST:
+                    self::adiciona($retorno[$i], 25, 29, self::remove(25, 29, $detalhe));
+                    self::adiciona($retorno[$i], 30, 36, self::remove(30, 36, $detalhe));
+                    self::adiciona($retorno[$i], 37, 37, self::remove(37, 37, $detalhe));
+                    self::adiciona($retorno[$i], 71, 82, self::remove(71, 82, $detalhe));
+                    break;
+                case Contracts\Boleto\Boleto::COD_BANCO_ITAU:
+                    self::adiciona($retorno[$i], 86, 94, self::remove(63, 70, $detalhe));
+                    break;
+                case Contracts\Boleto\Boleto::COD_BANCO_HSBC:
+                    self::adiciona($retorno[$i], 63, 73, self::remove(63, 73, $detalhe));
+                    break;
+                case Contracts\Boleto\Boleto::COD_BANCO_SICREDI:
+                    self::adiciona($retorno[$i], 48, 62, '00000' . self::remove(48, 56, $detalhe));
+                    break;
+                case Contracts\Boleto\Boleto::COD_BANCO_BANRISUL:
+                    self::adiciona($retorno[$i], 38, 62, self::remove(38, 62, $detalhe));
+                    self::adiciona($retorno[$i], 63, 72, self::remove(111, 120, $detalhe));
+                    self::adiciona($retorno[$i], 18, 30, self::remove(18, 30, $detalhe));
+                    break;
+                default:
+                    throw new \Exception("Banco: $banco, inválido");
             }
         }
 
@@ -765,7 +825,8 @@ final class Util
         $retorno = array_map(
             function ($a) {
                 return implode('', $a);
-            }, $retorno
+            },
+            $retorno
         );
 
         return implode("\r\n", $retorno);
@@ -801,7 +862,7 @@ final class Util
 
         $toSplice = $array;
 
-        if($toSplice != null) {
+        if ($toSplice != null) {
             return trim(implode('', array_splice($toSplice, $i, $t)));
         } else {
             return null;
@@ -941,12 +1002,12 @@ final class Util
         $ipte = self::onlyNumbers($ipte);
 
         $barras = substr($ipte, 0, 4);
-        $barras .= substr($ipte, 32, 1) ;
-        $barras .= substr($ipte, 33, 14) ;
-        $barras .= substr($ipte, 4,1) ;
-        $barras .= substr($ipte, 5, 4) ;
-        $barras .= substr($ipte, 10, 10) ;
-        $barras .= substr($ipte, 21, 8) ;
+        $barras .= substr($ipte, 32, 1);
+        $barras .= substr($ipte, 33, 14);
+        $barras .= substr($ipte, 4, 1);
+        $barras .= substr($ipte, 5, 4);
+        $barras .= substr($ipte, 10, 10);
+        $barras .= substr($ipte, 21, 8);
         $barras .= substr($ipte, 29, 2);
 
         return $barras;
@@ -990,7 +1051,8 @@ final class Util
      * @return string
      * @throws \Exception
      */
-    public static function getBancoClass($banco) {
+    public static function getBancoClass($banco)
+    {
 
         $aBancos = [
             BoletoContract::COD_BANCO_BB => 'Banco\\Bb',
