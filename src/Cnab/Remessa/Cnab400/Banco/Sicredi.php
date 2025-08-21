@@ -169,13 +169,13 @@ class Sicredi extends AbstractRemessa implements RemessaContract
         $this->add(19, 19, 'A');
         $this->add(20, 47, '');
         //$this->add(48, 56, Util::formatCnab('9', $boleto->getNossoNumero(), 9));
-        $this->add(48, 56, $boleto->getEmissaoPropria() === 'true' ? '         ' : Util::formatCnab('9', $boleto->getNossoNumero(), 9));
+        $this->add(48, 56, $boleto->getEmissaoPropria() === 'false' ? '         ' : Util::formatCnab('9', $boleto->getNossoNumero(), 9));
         $this->add(57, 62, '');
         $this->add(63, 70, Carbon::now()->format('Ymd'));
         $this->add(71, 71, '');
-        $this->add(72, 72, $boleto->getEmissaoPropria() === 'true' ? 'S' : 'N');
+        $this->add(72, 72, $boleto->getEmissaoPropria() === 'false' ? 'S' : 'N');
         $this->add(73, 73, '');
-        $this->add(74, 74, $boleto->getEmissaoPropria() === 'true' ? 'A' : 'B');
+        $this->add(74, 74, $boleto->getEmissaoPropria() === 'false' ? 'A' : 'B');
         $this->add(75, 76, '');
         $this->add(77, 78, '');
         $this->add(79, 82, '');
